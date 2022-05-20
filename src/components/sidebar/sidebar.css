@@ -17,7 +17,7 @@
 
 .sidebarTitle {
   font-size: 13px;
-  color: rgb(187, 186, 186);
+  color: rgb(58, 58, 58);
 }
 
 .sidebarList {
@@ -40,5 +40,5 @@
 
 .sidebarIcon{
     margin-right: 5px;
-    font-size: 20px !important;
+    font-size: 30px !important;
 }

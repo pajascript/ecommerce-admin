@@ -1,13 +1,32 @@
+import axios from "axios";
+import { useState } from "react";
 import "./newUser.css";
 
 export default function NewUser() {
+
+  const [inputs, setInputs] = useState({});
+
+  const handleChange = (e) => {
+    setInputs(prev => {
+      return {...prev, [e.target.name]: e.target.value}
+    });
+  }
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    axios.post("http://localhost:5000/api/auth/register", inputs)
+      .then(res => {
+        console.log(res)
+      })
+  }
+  
   return (
     <div className="newUser">
       <h1 className="newUserTitle">New User</h1>
       <form className="newUserForm">
         <div className="newUserItem">
           <label>Username</label>
-          <input type="text" placeholder="john" />
+          <input type="text" placeholder="john" name="username" onChange={handleChange} />
         </div>
         <div className="newUserItem">
           <label>Full Name</label>
@@ -15,11 +34,11 @@ export default function NewUser() {
         </div>
         <div className="newUserItem">
           <label>Email</label>
-          <input type="email" placeholder="john@gmail.com" />
+          <input type="email" placeholder="john@gmail.com" name="email" onChange={handleChange} />
         </div>
         <div className="newUserItem">
           <label>Password</label>
-          <input type="password" placeholder="password" />
+          <input type="password" placeholder="password" name="password" onChange={handleChange} />
         </div>
         <div className="newUserItem">
           <label>Phone</label>
@@ -47,7 +66,7 @@ export default function NewUser() {
             <option value="no">No</option>
           </select>
         </div>
-        <button className="newUserButton">Create</button>
+        <button className="newUserButton" onClick={handleClick} >Create</button>
       </form>
     </div>
   );

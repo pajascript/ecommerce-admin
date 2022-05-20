@@ -3,17 +3,26 @@ import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { userRows } from "../../dummyData";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsersList } from "../../redux/apiCalls";
 
 export default function UserList() {
+
   const [data, setData] = useState(userRows);
+  const dispatch = useDispatch();
+  const userList = useSelector(state => state.userList.users);
+
+  useEffect(() => {
+    getUsersList(dispatch);
+  }, [dispatch]);
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
   
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "_id", headerName: "ID", width: 90 },
     {
       field: "user",
       headerName: "User",
@@ -61,9 +70,10 @@ export default function UserList() {
   return (
     <div className="userList">
       <DataGrid
-        rows={data}
+        rows={userList}
         disableSelectionOnClick
         columns={columns}
+        getRowId={row => row._id}
         pageSize={8}
         checkboxSelection
       />
