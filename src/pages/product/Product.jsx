@@ -13,10 +13,11 @@ export default function Product() {
   const productId = location.pathname.split("/")[2];
   const [pStats, setPStats] = useState([]);
   const [inputs, setInputs] = useState({});
+  const [stock, setStock] = useState(0);
   const dispatch = useDispatch();
 
   const product = useSelector(state => state.product.products.find(product => product._id === productId));
-
+    
   const MONTHS = useMemo(
     () => [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -29,9 +30,15 @@ export default function Product() {
       })
   };
 
+  const handleStockChange = (e) => {
+    const convertedStock = parseInt(e.target.value)
+    setStock(convertedStock);
+  }
+
   const handleClick = (e) => {
     e.preventDefault();
-    updateProducts(inputs, dispatch);
+    updateProducts(productId, {...inputs, inStock: product.inStock + stock}, dispatch);
+    alert("Product Updated Successfully")
   };
 
   useEffect(() => {
@@ -77,12 +84,12 @@ export default function Product() {
                       <span className="productInfoValue">123</span>
                   </div>
                   <div className="productInfoItem">
-                      <span className="productInfoKey">sales:</span>
+                      <span className="productInfoKey">Sales:</span>
                       <span className="productInfoValue">5123</span>
                   </div>
                   <div className="productInfoItem">
-                      <span className="productInfoKey">in stock:</span>
-                      <span className="productInfoValue">{product.inStock}</span>
+                      <span className="productInfoKey">In Stock:</span>
+                      <span className="productInfoValue stock">{product.inStock}</span>
                   </div>
               </div>
           </div>
@@ -96,11 +103,8 @@ export default function Product() {
                   <input name="description" type="text" placeholder={product.description} onChange={handleChange} />
                   <label>Price</label>
                   <input name="price" type="number" placeholder={product.price} onChange={handleChange} />
-                  <label>In Stock</label>
-                  <select name="inStock" id="idStock" onChange={handleChange} >
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                  </select>
+                  <label>Add to Stock:</label>
+                  <input type="text" name="inStock" placeholder={0} onChange={handleStockChange} />
               </div>
               <div className="productFormRight">
                   <div className="productUpload">

@@ -67,6 +67,12 @@
   font-weight: 300;
 }
 
+.stock {
+  color: teal;
+  font-weight: 600;
+  font-size: 20px;
+}
+
 .productBottom {
   padding: 20px;
   margin: 20px;

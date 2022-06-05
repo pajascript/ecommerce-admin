@@ -5,6 +5,8 @@ import "./newUser.css";
 export default function NewUser() {
 
   const [inputs, setInputs] = useState({});
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleChange = (e) => {
     setInputs(prev => {
@@ -16,7 +18,10 @@ export default function NewUser() {
     e.preventDefault();
     axios.post("http://localhost:5000/api/auth/register", inputs)
       .then(res => {
-        console.log(res)
+        setSuccess(true);
+        alert("New User Added!")
+      }).catch(res => {
+        setError(true);
       })
   }
   
@@ -66,6 +71,8 @@ export default function NewUser() {
             <option value="no">No</option>
           </select>
         </div>
+        {success && <div>New User Added!</div>}
+        {error && <div>Something went wrong!</div>}
         <button className="newUserButton" onClick={handleClick} >Create</button>
       </form>
     </div>

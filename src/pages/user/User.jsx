@@ -8,8 +8,35 @@ import {
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import "./user.css";
+import { useLocation, useHistory } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../redux/apiCalls";
 
 export default function User() {
+
+  const location = useLocation();
+  const userId = location.pathname.split("/")[2];
+  const [inputs, setInputs] = useState({});
+  const dispatch = useDispatch();
+  const { error } = useSelector(state => state.userList.error)
+  const user = useSelector(state => state.userList.users.find(user => user._id === userId));
+  const history = useHistory();
+
+  const handleChange = (e) => {
+    setInputs(prev => {
+      return { ...prev, [e.target.name]: e.target.value }
+    })
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    updateUser(userId, inputs, dispatch);
+    alert("Profile Updated Successfully");
+    window.location.reload();
+  };
+
+
   return (
     <div className="user">
       <div className="userTitleContainer">
@@ -22,37 +49,38 @@ export default function User() {
         <div className="userShow">
           <div className="userShowTop">
             <img
-              src="https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+              src="https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
               alt=""
               className="userShowImg"
             />
             <div className="userShowTopTitle">
-              <span className="userShowUsername">Anna Becker</span>
-              <span className="userShowUserTitle">Software Engineer</span>
+              <span className="userShowUsername">{user.firstname + " " + user.lastname}</span>
+              <span className="userShowUserTitle">{user.isAdmin ? "Admin" : "Customer"}</span>
             </div>
           </div>
           <div className="userShowBottom">
             <span className="userShowTitle">Account Details</span>
             <div className="userShowInfo">
               <PermIdentity className="userShowIcon" />
-              <span className="userShowInfoTitle">annabeck99</span>
+              <span className="userShowInfoTitle">{user.username}</span>
             </div>
+            <div className="userShowTitle">Join Date</div>
             <div className="userShowInfo">
               <CalendarToday className="userShowIcon" />
-              <span className="userShowInfoTitle">10.12.1999</span>
+              <span className="userShowInfoTitle">{user.createdAt}</span>
             </div>
             <span className="userShowTitle">Contact Details</span>
             <div className="userShowInfo">
               <PhoneAndroid className="userShowIcon" />
-              <span className="userShowInfoTitle">+1 123 456 67</span>
+              <span className="userShowInfoTitle">09304677156</span>
             </div>
             <div className="userShowInfo">
               <MailOutline className="userShowIcon" />
-              <span className="userShowInfoTitle">annabeck99@gmail.com</span>
+              <span className="userShowInfoTitle">{user.email}</span>
             </div>
             <div className="userShowInfo">
               <LocationSearching className="userShowIcon" />
-              <span className="userShowInfoTitle">New York | USA</span>
+              <span className="userShowInfoTitle">Hillcrest Village</span>
             </div>
           </div>
         </div>
@@ -63,25 +91,41 @@ export default function User() {
               <div className="userUpdateItem">
                 <label>Username</label>
                 <input
+                  name="username"
                   type="text"
-                  placeholder="annabeck99"
+                  placeholder={user.username}
                   className="userUpdateInput"
+                  onChange={handleChange}
                 />
               </div>
               <div className="userUpdateItem">
-                <label>Full Name</label>
+                <label>First Name</label>
                 <input
+                  name="firstname"
                   type="text"
-                  placeholder="Anna Becker"
+                  placeholder={user.firstname}
                   className="userUpdateInput"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="userUpdateItem">
+                <label>Last Name</label>
+                <input
+                  name="lastname"
+                  type="text"
+                  placeholder={user.lastname}
+                  className="userUpdateInput"
+                  onChange={handleChange}
                 />
               </div>
               <div className="userUpdateItem">
                 <label>Email</label>
                 <input
+                  name="email"
                   type="text"
-                  placeholder="annabeck99@gmail.com"
+                  placeholder={user.email}
                   className="userUpdateInput"
+                  onChange={handleChange}
                 />
               </div>
               <div className="userUpdateItem">
@@ -102,7 +146,7 @@ export default function User() {
               </div>
             </div>
             <div className="userUpdateRight">
-              <div className="userUpdateUpload">
+              {/* <div className="userUpdateUpload">
                 <img
                   className="userUpdateImg"
                   src="https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
@@ -112,8 +156,8 @@ export default function User() {
                   <Publish className="userUpdateIcon" />
                 </label>
                 <input type="file" id="file" style={{ display: "none" }} />
-              </div>
-              <button className="userUpdateButton">Update</button>
+              </div> */}
+              <button className="userUpdateButton" onClick={handleClick} >Update</button>
             </div>
           </form>
         </div>

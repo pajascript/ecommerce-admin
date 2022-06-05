@@ -5,7 +5,7 @@ import { userRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsersList } from "../../redux/apiCalls";
+import { deleteUsersList, getUsersList } from "../../redux/apiCalls";
 
 export default function UserList() {
 
@@ -15,10 +15,10 @@ export default function UserList() {
 
   useEffect(() => {
     getUsersList(dispatch);
-  }, [dispatch]);
+  }, [dispatch, userList]);
 
   const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+    deleteUsersList(id, dispatch)
   };
   
   const columns = [
@@ -38,33 +38,33 @@ export default function UserList() {
     },
     { field: "email", headerName: "Email", width: 200 },
     {
-      field: "status",
-      headerName: "Status",
+      field: "firstname",
+      headerName: "First Name",
       width: 120,
     },
     {
-      field: "transaction",
-      headerName: "Transaction Volume",
+      field: "lastname",
+      headerName: "Last Name",
       width: 160,
     },
-    {
-      field: "action",
-      headerName: "Action",
-      width: 150,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link to={"/user/" + params.row.id}>
-              <button className="userListEdit">Edit</button>
-            </Link>
-            <DeleteOutline
-              className="userListDelete"
-              onClick={() => handleDelete(params.row.id)}
-            />
-          </>
-        );
-      },
-    },
+    // {
+    //   field: "action",
+    //   headerName: "Action",
+    //   width: 150,
+    //   renderCell: (params) => {
+    //     return (
+    //       <>
+    //         <Link to={"/user/" + params.row._id}>
+    //           <button className="userListEdit">Edit</button>
+    //         </Link>
+    //         <DeleteOutline
+    //           className="userListDelete"
+    //           onClick={() => handleDelete(params.row._id)}
+    //         />
+    //       </>
+    //     );
+    //   },
+    // },
   ];
 
   return (

@@ -10,6 +10,8 @@ export default function NewProduct() {
   const [inputs, setInputs] = useState({});
   const [file, setFile] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [success, setSuccess] = useState(false);
+  const [stock, setStock] = useState(0);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -20,6 +22,11 @@ export default function NewProduct() {
 
   const handleCat = (e) => {
     setCategories(e.target.value.split(","))
+  }
+
+  const handleStockChange = (e) => {
+    const convertedStock = parseInt(e.target.value)
+    setStock(convertedStock);
   }
 
   const handleClick = (e) => {
@@ -50,8 +57,10 @@ export default function NewProduct() {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          const product = {...inputs, img: downloadURL, categories};
+          const product = {...inputs, img: downloadURL, categories, inStock: stock };
           addProducts(product, dispatch);
+          setSuccess(true);
+          alert("New Product Added!")
         })
       }
     )
@@ -82,12 +91,10 @@ export default function NewProduct() {
           <input type="text" placeholder="e-liquids, devices..." onChange={handleCat} />
         </div>
         <div className="addProductItem">
-          <label>Stock</label>
-          <select name="inStock" onChange={handleChange} >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
+          <label>Stock: </label>
+          <input type="text" name="inStock" placeholder={0} onChange={handleStockChange} />
         </div>
+        {success && <div>New Product Added</div>}
         <button onClick={handleClick} className="addProductButton">Create</button>
       </form>
     </div>

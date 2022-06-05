@@ -5,9 +5,21 @@
   padding: 20px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
 .widgetLgTitle {
   font-size: 22px;
   font-weight: 600;
+}
+
+.saveButton {
+  background: rgb(20, 61, 85);
+  color: white;
+  border: none;
+  padding: 5px 10px;
 }
 
 .widgetLgTable{
@@ -40,7 +52,16 @@
 .widgetLgButton {
   padding: 5px 7px;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  background: rgb(20, 61, 85);
+  color: #fff;
+  margin: 2px;
+  transition: all 200ms ease;
+}
+
+.widgetLgButton:hover {
+  background: red;
 }
 
 .widgetLgButton.approved{
@@ -53,7 +74,12 @@
 
 }
 .widgetLgButton.pending{
-    background-color: #ebf1fe;
-    color: #2a7ade;
+    background-color: gray;
+    color: #ffff;
 
+}
+
+.completed {
+  background: orange;
+  color: #000;
 }
